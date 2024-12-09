@@ -73,6 +73,21 @@ jobs:
         git commit -m "⏱️ $(date +"%Y年%m月%d日-%H时%M分") GitHub Actions定时更新"
         git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:page
 
+    - name: Checkout page branch
+      uses: actions/checkout@v2
+      with:
+        ref: page 
+
+    - name: Setup aliyun oss
+      uses: manyuanrong/setup-ossutil@master
+      with:
+        endpoint: oss-cn-hangzhou.aliyuncs.com
+        access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
+
+    - name: To aliyun
+      run: ossutil cp all.json oss://${{ secrets.BUCKET }}/
+      
     - name: Delete Workflow Runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
