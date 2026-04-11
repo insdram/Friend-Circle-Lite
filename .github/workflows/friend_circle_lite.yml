@@ -34,7 +34,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Ensure temp folder is not empty
       run: |
         mkdir -p ./temp
@@ -57,7 +57,7 @@ jobs:
         echo "Checking RSS feeds..."
         python run.py
         ls ./temp
-    
+
     - name: Upload temp file as artifact
       uses: actions/upload-artifact@v4
       with:
@@ -86,7 +86,7 @@ jobs:
     - name: Checkout page branch
       uses: actions/checkout@v2
       with:
-        ref: page 
+        ref: page
 
     - name: Setup aliyun oss
       uses: manyuanrong/setup-ossutil@master
@@ -97,19 +97,9 @@ jobs:
 
     - name: To aliyun
       run: ossutil cp all.json oss://${{ secrets.BUCKET }}/
-      
+
     - name: Delete Workflow Runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
         retain_days: 30
         keep_minimum_runs: 6
-
-  keepalive-workflow:
-    name: Keepalive Workflow
-    if: ${{ always() }}
-    needs: friend-circle-lite
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - uses: liskin/gh-workflow-keepalive@v1
