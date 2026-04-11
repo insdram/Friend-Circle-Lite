@@ -96,7 +96,7 @@ jobs:
         access-key-secret: ${{ secrets.ACCESS_KEY_SECRET }}
 
     - name: To aliyun
-      run: ossutil cp all.json oss://${{ secrets.BUCKET }}/
+      run: ossutil cp -f all.json oss://${{ secrets.BUCKET }}/all.json
 
     - name: Delete Workflow Runs
       uses: Mattraks/delete-workflow-runs@v2
